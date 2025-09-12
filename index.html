@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Listify - A simple and stylish to-do list app with reminders.">
+  <title>Listify</title>  
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Favicons -->
+  <link rel="icon" href="favicon-32x32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="favicon-16x16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-mode">
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <img src="favicon-32x32.png" alt="Listify logo" class="site-logo">
+    <span class="site-title">Listify</span>
+
+    <!-- Navigation -->
+    <nav class="nav-links">
+      <a href="Homepage.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <!-- Dark/Light Toggle -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+      <i class="fa-solid fa-moon"></i>
+    </button>
+  </header>
+
+  <!-- Welcome -->
+  <section class="welcome-message">
+    <h2 id="greeting">Welcome back 👋</h2>
+    <p>Ready to crush your tasks today?</p>
+  </section>
+     
+  <main>
+    <div class="main-container">
+
+      <!-- Digital Clock -->
+      <section class="clock-reminder-container">
+        <div id="digital-clock" class="digital-clock" aria-live="polite">00:00:00</div>
+      </section>
+
+      <!-- Task Input + Time + Button -->
+      <section class="task-input-container">
+        <form class="task-row" onsubmit="return false;">
+          <input type="text" id="task-input" placeholder="Add new task..." aria-label="Task input">
+          <input type="time" id="task-time" title="Set time for reminder">
+          <button type="submit" id="add-task-btn" aria-label="Add task">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </form>
+      </section>
+
+      <!-- Todo App -->
+      <section class="todo-app">
+        <h2><b>Listify🍁</b></h2>
+        
+        <!-- Progress -->
+        <div class="stat-container">
+          <div class="details">
+            <h3>Keep it Up!</h3>
+            <div id="progressbar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+              <div id="progress"></div>
+            </div>
+          </div>
+          <div class="stats-number">
+            <p id="numbers">0 / 0</p>
+          </div>
+        </div>
+
+        <!-- Task List -->
+        <div class="todos-container">
+          <ul id="task-list"></ul>
+          <img 
+            class="empty-image" 
+            src="Mercedes-Benz Maybach on Twitter _ Dream cars mercedes, Dream cars, Luxury car interior.jpeg" 
+            alt="No tasks yet">
+        </div>
+      </section>
+
+      <!-- Calendar Section -->
+      <section class="calendar-container">
+        <h3>📅 Calendar</h3>
+        <div id="calendar"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Particles Container (JS will inject particles here) -->
+  <div id="particles-container"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

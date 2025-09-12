@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Floating background shapes */
+body::before, body::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  animation: float 12s ease-in-out infinite;
+}
+
+body::before {
+  width: 300px;
+  height: 300px;
+  top: -100px;
+  left: -100px;
+}
+
+body::after {
+  width: 250px;
+  height: 250px;
+  bottom: -80px;
+  right: -80px;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-40px) scale(1.05); }
+}
+
+/* Header */
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  top: 20px;
+  left: 30px;
+}
+
+.site-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.site-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Homepage Card */
+.homepage {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  padding: 3rem 4rem;
+  border-radius: 25px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+  max-width: 600px;
+  width: 90%;
+  animation: fadeUp 1s ease forwards;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+/* Title */
+.homepage h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 2.6rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Subtitle */
+.homepage p {
+  font-size: 1.2rem;
+  margin-bottom: 2.5rem;
+  color: #f0f0f0;
+  line-height: 1.6;
+}
+
+/* Button */
+.start-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(255, 118, 163, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover Effect */
+.start-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(255, 118, 163, 0.6);
+}
+
+/* Rocket animation */
+.start-btn i {
+  transition: transform 0.3s ease;
+}
+
+.start-btn:hover i {
+  transform: translateY(-4px) rotate(-15deg);
+}
+
+/* Fade-up animation */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

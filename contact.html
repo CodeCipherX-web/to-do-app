@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Listify</title>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Favicons -->
+  <link rel="icon" href="favicon-32x32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="favicon-16x16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- CSS -->
+  <link rel="stylesheet" href="contact.css">
+</head>
+<body class="light-mode">
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <img src="favicon-32x32.png" alt="Listify logo" class="site-logo">
+    <span class="site-title">Listify</span>
+
+    <!-- Navigation -->
+    <nav class="nav-links">
+      <a href="Homepage.html" class="active">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="index.html" class="active">Task</a>
+    </nav>
+
+    <!-- Dark/Light Toggle -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+      <i class="fa-solid fa-moon"></i>
+    </button>
+  </header>
+
+  <!-- ---------- Contact Header ---------- -->
+  <section class="contact-header">
+    <h1>Get in Touch</h1>
+    <p>We’d love to hear from you! Fill the form or use our contact info below.</p>
+  </section>
+
+  <!-- ---------- Contact Container ---------- -->
+  <main>
+    <div class="contact-container">
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <div class="info-card">
+          <i class="fa-solid fa-phone"></i>
+          <h3>Phone</h3>
+          <p>+254 700 000 000</p>
+        </div>
+        <div class="info-card">
+          <i class="fa-solid fa-envelope"></i>
+          <h3>Email</h3>
+          <p>hello@yourdomain.com</p>
+        </div>
+        <div class="info-card">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <h3>Location</h3>
+          <p>Nairobi, Kenya</p>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-container">
+        <form id="contact-form">
+          <div class="form-row">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+          </div>
+          <div class="form-row">
+            <input type="text" id="subject" placeholder="Subject" required>
+          </div>
+          <div class="form-row">
+            <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+          </div>
+          <button type="submit" id="send-btn"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="contact-footer">
+    <p>&copy; 2025 Listify. All rights reserved.</p>
+  </footer>
+
+  <!-- JS for theme toggle & form -->
+  <script src="contact.js"></script>
+</body>
+</html>

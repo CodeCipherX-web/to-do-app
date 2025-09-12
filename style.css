@@ -1,0 +1,839 @@
+/* ===============================
+   Listify — Full CSS (Enhanced + Time Sync)
+   =============================== */
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Ensure full viewport coverage */
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+:root {
+  --radius: 14px;
+  --font-body: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --font-heading: "Playfair Display", Georgia, serif;
+  --transition-fast: 0.18s;
+  --transition-medium: 0.33s;
+  --max-width: 980px;
+  --card-gap: 1rem;
+}
+
+/* ---------- Theme Variables ---------- */
+.light-mode {
+  --bg: #fffef7;
+  --card-bg: rgba(255,255,255,0.88); /* slightly brighter for glass effect */
+  --muted-card-bg: rgba(255,255,255,0.7);
+  --text: #0f1724;
+  --muted: #5b6b74;
+  --shadow: 0 10px 25px rgba(10,14,20,0.08);
+  --accent: #f59e0b;
+  --accent-2: #fbbf24;
+  --accent-gradient: linear-gradient(135deg,#fde68a,#f59e0b);
+  --glass-border: rgba(255,255,255,0.6);
+  --bg-pattern: url("https://i.pinimg.com/1200x/aa/c3/6b/aac36bf110780ceff90a377121161ce6.jpg");
+  --bg-overlay: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,223,186,0.06));
+  --link-hover: linear-gradient(135deg, #fde68a, #f59e0b);
+}
+
+.dark-mode {
+  --bg: #0b1220;
+  --card-bg: rgba(18,24,38,0.65); /* slightly more opaque for depth */
+  --muted-card-bg: rgba(26,34,52,0.65);
+  --text: #eef2ff;
+  --muted: #99a5b3;
+  --shadow: 0 12px 35px rgba(2,6,12,0.65);
+  --accent: #4fd1c5;
+  --accent-2: #805ad5;
+  --accent-gradient: linear-gradient(135deg,#4fd1c5,#805ad5);
+  --glass-border: rgba(255,255,255,0.04);
+  --bg-pattern: url("https://i.pinimg.com/736x/cc/cc/ff/ccccff5613cca65ee9d60cacda27ad51.jpg");
+  --bg-overlay: linear-gradient(135deg, rgba(79,209,197,0.05), rgba(128,90,213,0.06));
+  --link-hover: linear-gradient(135deg, #4fd1c5, #805ad5);
+}
+
+
+/* ---------- Body Base ---------- */
+body {
+  font-family: "Poppins", sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  position: relative;
+  transition: background 1s ease, color 0.5s ease;
+
+  /* Correct background handling */
+  background-color: var(--bg);
+  background-image: var(--bg-pattern);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover; /* ensures it always fills */
+}
+
+
+
+/* ---------- Dynamic Gradient Overlay ---------- */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--bg-overlay);
+  mix-blend-mode: soft-light;
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: -1;
+  animation: overlayShift 40s infinite alternate ease-in-out;
+}
+
+/* ---------- Subtle Vignette ---------- */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(0,0,0,0.22) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- Floating Light Animation ---------- */
+@keyframes overlayShift {
+  0%   { transform: translateY(0px) translateX(0px) scale(1); }
+  25%  { transform: translateY(-10px) translateX(6px) scale(1.02); }
+  50%  { transform: translateY(-5px) translateX(-5px) scale(1.01); }
+  75%  { transform: translateY(6px) translateX(4px) scale(1.02); }
+  100% { transform: translateY(0px) translateX(0px) scale(1); }
+}
+
+/* ---------- Optional Floating Particles ---------- */
+.particle {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  box-shadow: 0 0 8px rgba(255,255,255,0.5);
+  pointer-events: none;
+  animation: floatParticle linear infinite;
+}
+
+@keyframes floatParticle {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.5; }
+  50% { transform: translateY(-50px) translateX(20px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(-100px) translateX(-10px) scale(0.8); opacity: 0; }
+}
+
+
+/* ---------- Layout / Container ---------- */
+main {
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  gap: 2.2rem;
+  transition: all 0.4s ease;
+}
+
+.main-container {
+  width: 100%;
+  max-width: var(--max-width);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+  transition: all 0.4s ease;
+}
+
+/* responsive 2-column layout for wider screens */
+@media(min-width: 980px) {
+  .main-container {
+    grid-template-columns: 1fr 420px;
+    align-items: start;
+    gap: 2rem;
+  }
+}
+
+/* subtle hover & focus effect for all cards inside main-container */
+.main-container > * {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.4s ease, background 0.5s ease;
+}
+.main-container > *:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.12);
+}
+
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky;
+  top: 18px;
+  margin: 0.6rem auto;
+  width: calc(100% - 2.4rem);
+  max-width: var(--max-width);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.2rem;
+  background: var(--card-bg);
+  border-radius: calc(var(--radius) * 0.9);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12), 0 4px 14px rgba(0,0,0,0.08);
+  backdrop-filter: blur(14px) saturate(130%);
+  z-index: 50;
+  transition: background 0.5s ease, box-shadow 0.5s ease, transform 0.3s ease;
+}
+
+.site-header:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.18), 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* Logo with glow effect */
+.site-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-right: 0.8rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12), 0 0 8px rgba(255,255,255,0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.site-logo:hover {
+  transform: scale(1.08) rotate(2deg);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18), 0 0 12px rgba(255,255,255,0.08);
+}
+
+/* Title with subtle gradient & glow */
+.site-title {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+
+/* ---------- Navigation ---------- */
+.nav-links {
+  display: none;
+  font-family: var(--font-body);
+}
+@media(min-width:720px) {
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .nav-links a {
+    position: relative;
+    text-decoration: none;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    transition: all 0.35s ease, color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+  }
+
+  /* Animated underline */
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 10%;
+    bottom: 4px;
+    width: 0%;
+    height: 3px;
+    background: var(--accent-gradient);
+    border-radius: 2px;
+    transition: width 0.35s ease, background 0.35s ease;
+  }
+
+  /* Hover effects */
+  .nav-links a:hover::after {
+    width: 80%;
+  }
+  .nav-links a:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.12); /* slightly brighter for glow effect */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15), 0 0 6px rgba(255,255,255,0.08);
+    transform: translateY(-2px) scale(1.03);
+  }
+
+  /* Active / current link styling */
+  .nav-links a.active {
+    color: var(--text);
+    font-weight: 700;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1), 0 0 8px rgba(255,255,255,0.05);
+  }
+  .nav-links a.active::after {
+    width: 80%;
+  }
+
+  /* Smooth color gradient on hover */
+  .nav-links a:hover::after {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  }
+}
+
+/* ---------- Theme toggle (Enhanced) ---------- */
+.theme-toggle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #6EE7B7, #3B82F6);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18), 0 0 12px rgba(110,231,183,0.5);
+  transition: transform var(--transition-fast) ease, box-shadow var(--transition-fast), background 0.6s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow animation layer */
+.theme-toggle::before {
+  content: "";
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 70%);
+  top: -10%;
+  left: -10%;
+  transform: scale(0);
+  transition: transform 0.5s ease;
+  border-radius: 50%;
+}
+
+/* Hover interaction */
+.theme-toggle:hover::before {
+  transform: scale(1);
+}
+.theme-toggle:hover {
+  transform: translateY(-3px) scale(1.08) rotate(5deg);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.28), 0 0 18px rgba(110,231,183,0.7);
+}
+
+/* Active click feedback */
+.theme-toggle:active {
+  transform: scale(0.92) rotate(-2deg);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.14), 0 0 10px rgba(110,231,183,0.4);
+}
+
+/* Smooth background gradient animation */
+@keyframes toggleGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.theme-toggle {
+  background: linear-gradient(135deg, #6EE7B7, #3B82F6, #34D399, #60A5FA);
+  background-size: 300% 300%;
+  animation: toggleGradient 6s ease infinite;
+}
+
+/* ---------- Welcome ---------- */
+.welcome-message {
+  text-align: left;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.2rem 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px) saturate(140%);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 0 18px rgba(255,255,255,0.06);
+  transition: all 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-message::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -30%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, rgba(255, 223, 186, 0.15), rgba(255, 59, 180, 0.08), rgba(79, 209, 197, 0.12));
+  transform: rotate(30deg);
+  animation: shimmerMove 6s infinite linear;
+  z-index: 0;
+}
+
+@keyframes shimmerMove {
+  0% { transform: rotate(30deg) translateX(-100%); }
+  50% { transform: rotate(30deg) translateX(100%); }
+  100% { transform: rotate(30deg) translateX(-100%); }
+}
+
+.welcome-message h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  margin-bottom: 0.35rem;
+  background: linear-gradient(135deg, #fcd34d, #f59e0b, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientText 3s infinite alternate;
+  z-index: 1;
+  position: relative;
+}
+
+@keyframes gradientText {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.welcome-message p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 0.95;
+  z-index: 1;
+  position: relative;
+}
+
+
+/* ---------- Digital Clock ---------- */
+.clock-reminder-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+}
+#digital-clock {
+  width: 100%;
+  max-width: 720px;
+  padding: 10px 18px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  backdrop-filter: blur(8px) saturate(120%);
+  font-family: monospace;
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 1px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
+  transition: color 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* ---------- Task Input / Buttons ---------- */
+.task-input-container { display: flex; flex-direction: column; gap: 0.65rem; }
+
+.task-row { display: flex; gap: 0.5rem; }
+.task-row input[type="text"] {
+  flex: 1; padding: 0.65rem 1rem; border-radius: var(--radius);
+  border: none; background: var(--muted-card-bg); color: var(--text); font-size: 1rem;
+  transition: all var(--transition-medium) ease, box-shadow 0.4s ease;
+}
+.task-row input[type="text"]::placeholder { color: var(--muted); opacity: 0.85; }
+.task-row input[type="text"]:focus { outline: 2px solid var(--accent); background: var(--card-bg); box-shadow: 0 0 18px rgba(0,0,0,0.12); }
+
+/* ---------- Task Buttons (Add / Action Buttons) ---------- */
+.task-row button {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border: none; 
+  border-radius: calc(var(--radius) * 1.1);
+  padding: 0.55rem 1.1rem; 
+  font-size: 1.15rem; 
+  color: #fff;
+  cursor: pointer; 
+  display: grid; 
+  place-items: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.task-row button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 10%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  transform: scale(0.8);
+  border-radius: calc(var(--radius) * 1.1);
+}
+
+.task-row button:hover::before {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.task-row button:hover {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.22), 0 0 10px rgba(255,255,255,0.08);
+}
+
+.task-row button:active {
+  transform: scale(0.96) translateY(0);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+}
+.task-time-row input[type="time"] {
+  width: 130px; padding: 0.45rem 0.6rem; border-radius: var(--radius);
+  border: none; background: var(--muted-card-bg); color: var(--text);
+  font-size: 0.9rem;
+  transition: background 0.5s ease;
+}
+
+/* ---------- Todo App / Tasks ---------- */
+.todo-app { 
+  padding: 1rem; 
+  border-radius: var(--radius); 
+  background: var(--card-bg); 
+  box-shadow: var(--shadow); 
+  backdrop-filter: blur(10px) saturate(120%);
+  transition: background 0.6s ease, box-shadow 0.6s ease, transform 0.3s ease;
+}
+
+/* ---------- Task List ---------- */
+.todos-container ul { 
+  list-style: none; 
+  padding: 0; 
+  margin: 0; 
+}
+
+.todos-container li {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  gap: 0.75rem;
+  padding: 0.7rem 1rem; 
+  margin-bottom: 0.6rem; 
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.06); /* subtle glass effect */
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  position: relative; 
+  transform-origin: top center;
+  transition: all 0.35s ease, box-shadow 0.35s ease, transform 0.25s ease;
+}
+
+.todos-container li:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18), 0 0 8px rgba(255,255,255,0.05);
+}
+
+.todos-container li.completed span { 
+  text-decoration: line-through; 
+  opacity: 0.65; 
+}
+
+/* ---------- Custom Checkboxes (Neon Glass) ---------- */
+.todos-container li input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--accent-2);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease, box-shadow 0.4s ease;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(4px);
+}
+
+.todos-container li input[type="checkbox"]:hover { 
+  transform: scale(1.15); 
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent), 0 0 12px rgba(255,255,255,0.08);
+}
+
+.todos-container li input[type="checkbox"]:checked { 
+  background: var(--accent-gradient); 
+  border-color: var(--accent-gradient); 
+  box-shadow: 0 0 12px var(--accent), 0 0 16px rgba(255,255,255,0.15);
+}
+
+.todos-container li input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+  animation: checkMark 0.25s ease forwards;
+}
+
+@keyframes checkMark {
+  0% { width: 0; height: 0; opacity: 0; }
+  50% { width: 6px; height: 12px; opacity: 1; }
+  100% { width: 6px; height: 12px; opacity: 1; }
+}
+
+
+/* ---------- Edit & Delete Buttons ---------- */
+.edit-btn, .delete-btn {
+  border: none; 
+  background: transparent; 
+  cursor: pointer;
+  font-size: 1.1rem; 
+  font-weight: 600;
+  padding: 6px 10px; 
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease, color 0.3s ease;
+}
+
+.edit-btn {
+  color: var(--accent-2);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.edit-btn:hover {
+  color: #fff;
+  background: var(--accent-gradient);
+  transform: scale(1.12);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.18), 0 0 8px var(--accent);
+}
+
+.delete-btn {
+  color: #f87171; /* light red */
+  background: rgba(248,113,113,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.delete-btn:hover {
+  color: #fff;
+  background: linear-gradient(135deg, #f87171, #e02424);
+  transform: scale(1.12);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.18), 0 0 8px #e02424;
+}
+
+
+
+/* ---------- Stats / Progress Bar (Cinematic Upgrade) ---------- */
+.stat-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+#progressbar {
+  width: 100%;
+  height: 12px;
+  background: var(--muted-card-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 0.3rem;
+  position: relative;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+  transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+#progress {
+  width: 0%;
+  height: 100%;
+  background: var(--accent-gradient);
+  transition: width 0.5s ease, background 0.5s ease;
+  border-radius: var(--radius);
+  position: relative;
+  box-shadow: 0 0 12px rgba(0,0,0,0.12) inset, 0 0 8px rgba(255,255,255,0.08);
+}
+
+/* Percentage / Text Indicator */
+#progress::after {
+  content: attr(data-text);
+  position: absolute;
+  top: -22px;
+  right: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-2);
+  text-shadow: 0 0 2px rgba(0,0,0,0.25);
+  transition: right 0.35s ease, color 0.35s ease;
+}
+
+/* Hover Interaction */
+#progressbar:hover #progress {
+  box-shadow: 0 0 18px rgba(0,0,0,0.15) inset, 0 0 12px rgba(255,255,255,0.12);
+  filter: brightness(1.1);
+}
+
+/* Smooth Glow Animation for Progress Bar */
+@keyframes progressGlow {
+  0%   { box-shadow: 0 0 12px rgba(255,255,255,0.05), 0 0 6px rgba(0,0,0,0.08) inset; }
+  50%  { box-shadow: 0 0 18px rgba(255,255,255,0.12), 0 0 10px rgba(0,0,0,0.12) inset; }
+  100% { box-shadow: 0 0 12px rgba(255,255,255,0.05), 0 0 6px rgba(0,0,0,0.08) inset; }
+}
+
+#progress.animate {
+  animation: progressGlow 1.8s infinite alternate ease-in-out;
+}
+
+/* Optional: Floating shimmer overlay */
+#progress::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -30%;
+  width: 30%; height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05), rgba(255,255,255,0.15));
+  transform: skewX(-25deg);
+  pointer-events: none;
+  transition: left 0.5s ease;
+}
+#progress.animate::before {
+  animation: shimmer 1.6s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -30%; }
+  100% { left: 110%; }
+}
+
+
+/* ---------- Empty State Image (Enhanced) ---------- */
+.empty-image { 
+  width: 100%; 
+  max-width: 400px; 
+  display: block; 
+  margin: 2.5rem auto 0; 
+  border-radius: var(--radius); 
+  filter: brightness(0.95) drop-shadow(0 6px 18px rgba(0,0,0,0.2)); 
+  transition: all 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
+  backdrop-filter: blur(4px); /* subtle frosted effect */
+  cursor: default;
+}
+
+.empty-image:hover {
+  transform: scale(1.03) rotate(-1deg);
+  filter: brightness(1.05) drop-shadow(0 12px 24px rgba(0,0,0,0.25));
+  box-shadow: 0 0 12px var(--accent), 0 0 18px rgba(255,255,255,0.1);
+}
+
+
+/* ---------- Calendar (Enhanced) ---------- */
+#calendar {
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  background: var(--card-bg);
+  border-radius: calc(var(--radius) * 1.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  backdrop-filter: blur(12px) saturate(130%);
+  transition: background 0.6s ease, box-shadow 0.6s ease;
+}
+
+.calendar-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 6px;
+  text-align: center;
+  font-size: 0.95rem;
+  table-layout: fixed;
+}
+
+.calendar-table th {
+  padding: 0.6rem 0;
+  color: var(--accent-2);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.calendar-table td {
+  padding: 0.65rem 0;
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--muted-card-bg);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--text);
+  font-weight: 500;
+  position: relative;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.04);
+}
+
+/* Highlight today with neon/glass effect */
+.calendar-table td.today {
+  background: var(--accent-gradient);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.18), 0 0 12px var(--accent);
+  position: relative;
+  z-index: 2;
+}
+
+/* Hover Glow */
+.calendar-table td:hover {
+  transform: scale(1.08);
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), var(--accent-2));
+  color: #fff;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.18), 0 0 10px var(--accent-2);
+}
+
+/* Optional: subtle pulse for today */
+.calendar-table td.today::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  box-shadow: 0 0 8px var(--accent), 0 0 14px rgba(255,255,255,0.15);
+  animation: pulseToday 2.5s infinite alternate ease-in-out;
+}
+
+@keyframes pulseToday {
+  0% { box-shadow: 0 0 8px var(--accent), 0 0 14px rgba(255,255,255,0.15); }
+  50% { box-shadow: 0 0 12px var(--accent), 0 0 18px rgba(255,255,255,0.25); }
+  100% { box-shadow: 0 0 8px var(--accent), 0 0 14px rgba(255,255,255,0.15); }
+}
+
+/* ---------- Animations ---------- */
+.added { 
+  animation: fadeInUp 0.4s ease forwards; 
+}
+.removed { 
+  animation: fadeOut 0.35s ease forwards; 
+}
+
+@keyframes fadeInUp { 
+  0% { opacity: 0; transform: translateY(16px); } 
+  100% { opacity: 1; transform: translateY(0); } 
+}
+
+@keyframes fadeOut { 
+  0% { opacity: 1; transform: translateX(0); } 
+  100% { opacity: 0; transform: translateX(36px); } 
+}
+
+/* ---------- Time Sync Glow Enhancements ---------- */
+.todo-app, 
+.todos-container li, 
+.task-row input, 
+.task-time-row input, 
+#digital-clock, 
+.task-row button {
+  transition: 
+    background 0.55s ease, 
+    color 0.55s ease, 
+    box-shadow 0.55s ease, 
+    transform 0.35s ease;
+}
