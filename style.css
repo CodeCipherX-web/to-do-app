@@ -2,12 +2,74 @@
    Listify — Full CSS (Enhanced + Time Sync)
    =============================== */
 
-/* ---------- Reset & Base ---------- */
+   /* ---------- Reset & Base ---------- */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
+
+/* ---------- Responsive Fix ---------- */
+html {
+  font-size: 16px; /* base for desktop */
+}
+
+/* For tablets and smaller (≤ 1024px) */
+@media (max-width: 1024px) {
+  html {
+    font-size: 15px; /* slightly smaller text */
+  }
+  .task-row {
+    gap: 8px;
+  }
+  #task-input, #task-time {
+    font-size: 0.95rem;
+  }
+}
+
+/* For mobile phones (≤ 768px) */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+
+  .main-container {
+    flex-direction: column;
+    padding: 0 12px;
+  }
+
+  .task-row {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  #task-input, #task-time {
+    width: 100%;  /* full width on mobile */
+  }
+
+  #add-task-btn {
+    width: 100%;
+    border-radius: 12px; /* rectangle button on phone */
+  }
+
+  .stat-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  #digital-clock {
+    font-size: 1.2rem;
+    padding: 8px 12px;
+  }
+
+  .todos-container li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 
 /* Ensure full viewport coverage */
 html, body {
